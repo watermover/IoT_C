@@ -4,12 +4,12 @@
 #include <stddef.h>
 
 typedef struct {
-    int year;        /* dddd */
-    int month;       /* 1..12 */
-    int day;         /* 1..31 */
-    int hour;        /* 0..23 */
-    int minute;      /* 0..59 */
-    int temperature; /* -99..99 */
+    int year;      
+    int month;     
+    int day;       
+    int hour;      
+    int minute;    
+    int temperature;
 } TempRecord;
 
 typedef struct {
