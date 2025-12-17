@@ -17,8 +17,6 @@ static void print_help(const char *prog)
 
 static int detect_year(const TempArray *a)
 {
-    /* по заданию не уточнено, как выбирать год;
-       сделаем: берем год первой записи */
     if (!a || a->size == 0) return 0;
     return a->data[0].year;
 }

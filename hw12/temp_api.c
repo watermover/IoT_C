@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-/* ---------- TempArray ---------- */
 int ta_init(TempArray *a, size_t initial_cap)
 {
     if (!a) return 0;
@@ -65,7 +64,6 @@ void ta_print(const TempArray *a)
     }
 }
 
-/* Сортировка по (year,month,day,hour,minute) */
 static int cmp_records(const void *pa, const void *pb)
 {
     const TempRecord *a = (const TempRecord*)pa;
@@ -84,11 +82,7 @@ void ta_sort(TempArray *a)
     qsort(a->data, a->size, sizeof(a->data[0]), cmp_records);
 }
 
-/* ---------- CSV ---------- */
-/* Формат строки ожидается такой:
-   year,month,day,hour,minute,temperature
-   пример: 2025,12,14,13,05,-2
-*/
+
 int ta_load_csv(TempArray *a, const char *path)
 {
     if (!a || !path) return 0;
@@ -97,11 +91,9 @@ int ta_load_csv(TempArray *a, const char *path)
 
     char line[256];
     while (fgets(line, sizeof(line), f)) {
-        /* пропуск пустых/комментариев */
         if (line[0] == '\n' || line[0] == '\r' || line[0] == '#')
             continue;
 
-        /* разбор через strtok: удобно для простого CSV без кавычек */
         char *p = strtok(line, ",");
         if (!p) continue;
         TempRecord r;
@@ -113,7 +105,6 @@ int ta_load_csv(TempArray *a, const char *path)
         p = strtok(NULL, ","); if (!p) continue; r.minute = atoi(p);
         p = strtok(NULL, ","); if (!p) continue; r.temperature = atoi(p);
 
-        /* простая валидация по диапазонам */
         if (r.month < 1 || r.month > 12) continue;
         if (r.temperature < -99 || r.temperature > 99) continue;
 
@@ -127,7 +118,6 @@ int ta_load_csv(TempArray *a, const char *path)
     return 1;
 }
 
-/* ---------- Статистика ---------- */
 double get_month_avg(const TempRecord *data, size_t size, int year, int month)
 {
     long sum = 0;
